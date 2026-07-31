@@ -21,7 +21,7 @@
  */
 #pragma once
 
-//#define LOTMAXX_BLTOUCH // Enable if you want to use BLTOUCH
+#define LOTMAXX_BLTOUCH // Enable if you want to use BLTOUCH
 
 /**
  * Configuration.h
@@ -835,7 +835,11 @@
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
 #define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
 #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#if ENABLED(LOTMAXX_BLTOUCH)
+  #define Z_MIN_ENDSTOP_INVERTING false // BLTOUCH requires this to be false
+#else
+  #define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#endif
 #define I_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define J_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define K_MIN_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
@@ -1018,7 +1022,7 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-#define S_CURVE_ACCELERATION
+//#define S_CURVE_ACCELERATION // Disabled: not compatible with LIN_ADVANCE
 
 //===========================================================================
 //============================= Z Probe Options =============================
@@ -1690,7 +1694,7 @@
  * Add a bed leveling sub-menu for ABL or MBL.
  * Include a guided procedure if manual probing is enabled.
  */
-#define LCD_BED_LEVELING
+//#define LCD_BED_LEVELING  // SC-10 headless: nessun LCD
 
 #if ENABLED(LCD_BED_LEVELING)
   #define MESH_EDIT_Z_STEP  0.025 // (mm) Step size while manually probing Z axis.
@@ -2689,7 +2693,8 @@
 // 480x320, 3.5", FSMC Display From MKS
 // Normally used in MKS Robin Nano V1.2
 //
-#define MKS_ROBIN_TFT35
+// SC-10: pannello reale ST7796 (verificato dal RE del firmware originale, ID 0x7796), non ILI9488.
+//#define MKS_ROBIN_TFT35
 
 //
 // 480x272, 4.3", FSMC Display From MKS
@@ -2735,19 +2740,19 @@
 //
 // Generic TFT with detailed options
 //
-//#define TFT_GENERIC
+//#define TFT_GENERIC  // SC-10: display disabilitato (build headless via OctoPrint)
 #if ENABLED(TFT_GENERIC)
   // :[ 'AUTO', 'ST7735', 'ST7789', 'ST7796', 'R61505', 'ILI9328', 'ILI9341', 'ILI9488' ]
-  #define TFT_DRIVER AUTO
+  #define TFT_DRIVER ST7796
 
   // Interface. Enable one of the following options:
-  //#define TFT_INTERFACE_FSMC
+  #define TFT_INTERFACE_FSMC
   //#define TFT_INTERFACE_SPI
 
   // TFT Resolution. Enable one of the following options:
   //#define TFT_RES_320x240
   //#define TFT_RES_480x272
-  //#define TFT_RES_480x320
+  #define TFT_RES_480x320
   //#define TFT_RES_1024x600
 #endif
 
@@ -2762,7 +2767,7 @@
  *   root of your SD card, together with the compiled firmware.
  */
 //#define TFT_CLASSIC_UI
-#define TFT_COLOR_UI
+//#define TFT_COLOR_UI
 //#define TFT_LVGL_UI
 
 #if ENABLED(TFT_LVGL_UI)
@@ -2807,7 +2812,7 @@
 //
 // Touch Screen Settings
 //
-#define TOUCH_SCREEN
+//#define TOUCH_SCREEN
 #if ENABLED(TOUCH_SCREEN)
   #define BUTTON_DELAY_EDIT  50 // (ms) Button repeat delay for edit screens
   #define BUTTON_DELAY_MENU 250 // (ms) Button repeat delay for menus

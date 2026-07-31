@@ -181,7 +181,7 @@
    * If the screen stays white, disable 'TFT_RESET_PIN'
    * to let the bootloader init the screen.
    */
-  #define TFT_RESET_PIN                     PC6   // FSMC_RST
+  //#define TFT_RESET_PIN                   PC6   // FSMC_RST  // SC-10: disabilitato (schermo bianco), il display si auto-inizializza
   #define TFT_BACKLIGHT_PIN                 PD13
 
   #define DOGLCD_MOSI                       -1    // Prevent auto-define by Conditionals_post.h
